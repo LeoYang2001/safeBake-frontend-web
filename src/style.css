@@ -1,1 +1,130 @@
 @import "tailwindcss";
+
+/* Global Dark Theme Variables */
+:root {
+  /* Main Background & Text */
+  --color-background: #1b1b1d;
+  --color-text-primary: #f9f9f9;
+  --color-text-secondary: #b3b3b3;
+  --color-text-muted: #888888;
+
+  /* Surface Colors */
+  --color-surface-primary: #2a2a2d;
+  --color-surface-secondary: #3a3a3d;
+  --color-surface-elevated: #4a4a4d;
+
+  /* Brand Colors */
+  --color-brand-primary: #3b82f6;
+  --color-brand-secondary: #1e40af;
+  --color-brand-accent: #60a5fa;
+
+  /* Status Colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #06b6d4;
+
+  /* Border Colors */
+  --color-border-primary: #404040;
+  --color-border-secondary: #525252;
+  --color-border-accent: #737373;
+
+  /* Button Colors */
+  --color-button-primary: #3b82f6;
+  --color-button-primary-hover: #2563eb;
+  --color-button-secondary: #374151;
+  --color-button-secondary-hover: #4b5563;
+
+  /* Input Colors */
+  --color-input-bg: #2a2a2d;
+  --color-input-border: #404040;
+  --color-input-border-focus: #3b82f6;
+}
+
+/* Global Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-accent);
+}
+
+/* Focus ring for accessibility */
+.focus-ring {
+  outline: 2px solid var(--color-brand-primary);
+  outline-offset: 2px;
+}
+
+/* Custom utility classes */
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+.bg-surface {
+  background-color: var(--color-surface-primary);
+}
+
+.bg-surface-secondary {
+  background-color: var(--color-surface-secondary);
+}
+
+.bg-surface-elevated {
+  background-color: var(--color-surface-elevated);
+}
+
+.border-primary {
+  border-color: var(--color-border-primary);
+}
+
+.border-secondary {
+  border-color: var(--color-border-secondary);
+}
+
+/* Animation utilities */
+.transition-smooth {
+  transition: all 0.2s ease-in-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

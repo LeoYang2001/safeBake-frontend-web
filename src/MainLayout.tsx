@@ -1,11 +1,18 @@
 import { Outlet } from "react-router-dom";
-import Header from "./components/Header";
+import Header from "./components/common/Header";
+import { COLORS } from "./constants";
 
 function MainLayout() {
   return (
-    <div className="min-h-screen  border flex flex-col">
+    <div className="min-h-screen   flex flex-col">
       <Header />
-      <main className="flex-1 border border-red-500 ">
+      <main
+        style={{
+          backgroundColor: COLORS.BACKGROUND,
+          padding: "20px",
+        }}
+        className=" flex-1 w-full  flex   "
+      >
         <Outlet />
       </main>
     </div>

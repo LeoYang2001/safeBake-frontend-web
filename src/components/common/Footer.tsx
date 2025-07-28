@@ -2,25 +2,25 @@ import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-gray-800 text-white">
+    <footer className="bg-surface-secondary border-t border-primary">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg">
                 <span className="text-white font-bold text-lg">S</span>
               </div>
-              <span className="text-xl font-bold">SafeBake</span>
+              <span className="text-xl font-bold text-primary">SafeBake</span>
             </div>
-            <p className="text-gray-300 mb-4">
+            <p className="text-secondary mb-4">
               Innovative baking solutions for safe and delicious results every
               time.
             </p>
             <div className="flex space-x-4">
               <a
                 href="#"
-                className="text-gray-300 hover:text-white transition-colors"
+                className="text-secondary hover:text-blue-400 transition-smooth"
               >
                 <svg
                   className="w-5 h-5"
@@ -32,7 +32,7 @@ function Footer() {
               </a>
               <a
                 href="#"
-                className="text-gray-300 hover:text-white transition-colors"
+                className="text-secondary hover:text-blue-400 transition-smooth"
               >
                 <svg
                   className="w-5 h-5"
@@ -44,7 +44,7 @@ function Footer() {
               </a>
               <a
                 href="#"
-                className="text-gray-300 hover:text-white transition-colors"
+                className="text-secondary hover:text-blue-400 transition-smooth"
               >
                 <svg
                   className="w-5 h-5"
@@ -59,12 +59,14 @@ function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4 text-primary">
+              Quick Links
+            </h3>
             <ul className="space-y-2">
               <li>
                 <Link
                   to="/"
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-secondary hover:text-blue-400 transition-smooth"
                 >
                   Home
                 </Link>
@@ -72,7 +74,7 @@ function Footer() {
               <li>
                 <Link
                   to="/about"
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-secondary hover:text-blue-400 transition-smooth"
                 >
                   About
                 </Link>
@@ -80,7 +82,7 @@ function Footer() {
               <li>
                 <Link
                   to="/products"
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-secondary hover:text-blue-400 transition-smooth"
                 >
                   Products
                 </Link>
@@ -88,7 +90,7 @@ function Footer() {
               <li>
                 <Link
                   to="/contact"
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-secondary hover:text-blue-400 transition-smooth"
                 >
                   Contact
                 </Link>
@@ -98,8 +100,8 @@ function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact</h3>
-            <ul className="space-y-2 text-gray-300">
+            <h3 className="text-lg font-semibold mb-4 text-primary">Contact</h3>
+            <ul className="space-y-2 text-secondary">
               <li>123 Baking Street</li>
               <li>Sweet City, SC 12345</li>
               <li>Phone: (555) 123-4567</li>
@@ -108,7 +110,7 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-300">
+        <div className="border-t border-primary mt-8 pt-6 text-center text-secondary">
           <p>&copy; 2025 SafeBake. All rights reserved.</p>
         </div>
       </div>
