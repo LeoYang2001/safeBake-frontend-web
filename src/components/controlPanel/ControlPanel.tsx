@@ -6,7 +6,6 @@ import {
   setExpandedPanel,
   togglePreviewMode,
 } from "../../store/slices/controlPanelSlice";
-import { startOven, stopOven } from "../../store/slices/ovenSlice";
 import { applyModeConfig } from "../../store/slices/previewSlice";
 
 function ControlPanel() {
@@ -20,15 +19,12 @@ function ControlPanel() {
     isPreviewMode,
     availableModes,
   } = useAppSelector((state) => state.controlPanel);
-  const { isRunning } = useAppSelector((state) => state.oven);
   const controlList = [
     {
       label: "Start",
       action: () => {
-        if (isRunning) {
-          dispatch(stopOven());
+        if (true) {
         } else {
-          dispatch(startOven());
         }
       },
       icon: Power,

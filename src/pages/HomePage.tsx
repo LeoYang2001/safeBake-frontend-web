@@ -1,11 +1,8 @@
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import {
-  setTargetTemperature,
-  setIsRunning,
   setPhase,
-  setTimerMs,
-  setRemainingMs,
   setOvenState,
+  mapOvenStateToBackend,
 } from "../store/slices/ovenSlice";
 import OvenDialProp from "../components/common/OvenDialProp";
 import { TextGenerateEffect } from "../components/ui/text-generate-effect";
@@ -13,18 +10,16 @@ import ControlPanel from "../components/controlPanel/ControlPanel";
 import DoorLockBtn from "../components/common/DoorLockBtn";
 import OvenPreview from "../components/ovenPreview/OvenPreview";
 import OvenTimerProp from "../components/common/OvenTimerProp";
-import OvenTimerDial from "../components/common/OvenTimerDial";
-import { useEffect } from "react";
-import { fetchOvenStatus } from "../api/ovenApi";
+import { useEffect, useRef } from "react";
+import { fetchOvenStatus, updateOvenStatus } from "../api/ovenApi";
 import { connectToOvenUpdates } from "../api/ovenSse";
 
 function HomePage() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    // Initial fetch (optional, for first load)
-    fetchOvenStatus().then((data) => {
-      dispatch(setOvenState(data));
+    fetchOvenStatus().then((res) => {
+      dispatch(setOvenState(res.data));
     });
 
     // Connect to SSE for real-time updates
@@ -33,26 +28,30 @@ function HomePage() {
   }, [dispatch]);
 
   // Redux state selectors
+  const ovenState = useAppSelector((state) => state.oven);
   const {
-    targetTemperature,
-    temperatureRange,
-    isRunning,
-    currentAmbientTemp,
+    currentTemp, // backend field
+    targetTemp, // backend field
     phase,
-  } = useAppSelector((state) => state.oven);
+  } = ovenState;
+
+  // Sync Redux oven state to backend
+  const prevOvenState = useRef(ovenState);
+  useEffect(() => {
+    if (prevOvenState.current !== ovenState) {
+      updateOvenStatus(mapOvenStateToBackend(ovenState));
+      prevOvenState.current = ovenState;
+    }
+  }, [ovenState]);
 
   const { isPreviewMode } = useAppSelector((state) => state.controlPanel);
 
   // Action handlers
   const handleTemperatureChange = (value: React.SetStateAction<number>) => {
-    const newTemp =
-      typeof value === "function" ? value(targetTemperature) : value;
-    dispatch(setTargetTemperature(newTemp));
+    const newTemp = typeof value === "function" ? value(currentTemp) : value;
   };
 
-  const handleOvenRunningChange = (running: boolean) => {
-    dispatch(setIsRunning(running));
-  };
+  const handleOvenRunningChange = (running: boolean) => {};
   return (
     <div className=" w-full flex-1 flex flex-col ">
       <div className=" flex flex-row items-center justify-between">
@@ -62,15 +61,15 @@ function HomePage() {
           className="font-normal"
         />
         <span className="   font-normal opacity-70">
-          Currently: {currentAmbientTemp} °F
+          Currently: {currentTemp} °F
         </span>
       </div>
       <div className=" flex-1/2 w-full  flex flex-row items-center justify-between">
         <OvenDialProp
           setCurrentValue={handleTemperatureChange}
-          currentValue={targetTemperature}
-          range={temperatureRange}
-          valueLabel={`${targetTemperature} °F`}
+          currentValue={currentTemp}
+          range={[200, 550]}
+          valueLabel={`${currentTemp} °F`}
           size={250}
         />
         <div className=" flex flex-1  h-[70%]  justify-center items-center relative">
@@ -94,7 +93,7 @@ function HomePage() {
             }
           >
             <DoorLockBtn
-              isOvenRunning={isRunning}
+              isOvenRunning={true}
               setIsOvenRunning={handleOvenRunningChange}
               ifOvenPreview={isPreviewMode}
             />

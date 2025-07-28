@@ -1,8 +1,15 @@
 import { store } from "../store";
 import { setOvenState } from "../store/slices/ovenSlice";
 
-export function handleOvenUpdate(data: any) {
-  store.dispatch(setOvenState(data));
+export function handleOvenUpdate(event: any) {
+  console.log("handleOvenUpdate called with data:", event);
+  if (event?.data?.ovenData) {
+    store.dispatch(setOvenState(event.data.ovenData));
+  } else if (event?.data) {
+    store.dispatch(setOvenState(event.data));
+  } else {
+    store.dispatch(setOvenState(event));
+  }
 }
 
 export const connectToOvenUpdates = () => {

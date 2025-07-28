@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { COLORS } from "../../constants";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { setRemainingMs, completeTimer } from "../../store/slices/ovenSlice";
 
 interface OvenTimerPropProps {
   size?: number;
@@ -12,18 +11,40 @@ function OvenTimerProp({
   size = 200,
   direction = "right",
 }: OvenTimerPropProps) {
-  const dispatch = useAppDispatch();
+  // Only use estimatedPreheatTime from Redux
+  const { estimatedPreheatTime } = useAppSelector((state) => state.oven);
 
-  // Redux state
-  const { timerMs, remainingMs, isRunning } = useAppSelector(
-    (state) => state.oven
-  );
-
+  // Local state for countdown in ms
+  const [remainingMs, setRemainingMs] = useState(estimatedPreheatTime * 1000);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Start countdown timer on mount or when estimatedPreheatTime changes
+  useEffect(() => {
+    setRemainingMs(estimatedPreheatTime * 1000);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (estimatedPreheatTime > 0) {
+      intervalRef.current = setInterval(() => {
+        setRemainingMs((prev) => {
+          if (prev <= 1000) {
+            clearInterval(intervalRef.current!);
+            return 0;
+          }
+          return prev - 1000;
+        });
+      }, 1000);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [estimatedPreheatTime]);
+
   const animationRef = useRef<number | null>(null);
 
   // Calculate percentages for display
-  const targetPercentage = Math.max(0, (remainingMs / timerMs) * 100);
+  const targetPercentage = Math.max(
+    0,
+    (remainingMs / (estimatedPreheatTime * 1000)) * 100
+  );
   const [currentPercentage, setCurrentPercentage] = useState(targetPercentage);
 
   // Format time for display
@@ -78,31 +99,6 @@ function OvenTimerProp({
       }
     };
   }, [targetPercentage, currentPercentage]);
-
-  // Timer countdown logic - controlled by Redux state
-  useEffect(() => {
-    if (isRunning && remainingMs > 0) {
-      intervalRef.current = setInterval(() => {
-        dispatch(setRemainingMs(Math.max(0, remainingMs - 100))); // Update every 100ms for smooth animation
-
-        // Check if timer completed
-        if (remainingMs <= 100) {
-          dispatch(completeTimer());
-        }
-      }, 100);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [isRunning, remainingMs, dispatch]);
 
   // Timer color palette - green to red theme (timer countdown colors)
   const timerColors = [

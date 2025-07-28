@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { Minus, Plus, Clock } from "lucide-react";
 import { COLORS } from "../../constants";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { incrementTimer, decrementTimer } from "../../store/slices/ovenSlice";
 
 interface OvenTimerDialProps {
   size?: number;
